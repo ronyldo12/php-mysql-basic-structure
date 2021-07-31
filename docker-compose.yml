@@ -1,0 +1,34 @@
+version: "3.7"
+services:
+
+#Laravel App
+  webserver:
+    image: php:7.4.22-apache
+    restart: unless-stopped
+    working_dir: /var/www/html/
+    ports:
+        - 8080:80
+    volumes:
+      - ./:/var/www/html/
+    networks:
+      - storenet
+
+  #Mysl Service
+  mysql:
+    image: mysql/mysql-server:5.7.35
+    restart: unless-stopped
+    ports: 
+        - 3306:3306
+    environment:
+      MYSQL_DATABASE: store
+      MYSQL_ROOT_PASSWORD: 12345
+      MYSQL_PASSWORD: 12345
+      MYSQL_USER: root
+    volumes:
+      - /var/lib/mysql_store/:/var/lib/mysql/
+    networks:
+      - storenet
+      
+networks:
+  storenet:
+    driver: bridge
